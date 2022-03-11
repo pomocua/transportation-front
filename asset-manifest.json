@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/transportation-front/static/css/main.bc091e6d.css",
+    "main.js": "/transportation-front/static/js/main.9d82dad9.js",
+    "index.html": "/transportation-front/index.html",
+    "main.bc091e6d.css.map": "/transportation-front/static/css/main.bc091e6d.css.map",
+    "main.9d82dad9.js.map": "/transportation-front/static/js/main.9d82dad9.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bc091e6d.css",
+    "static/js/main.9d82dad9.js"
+  ]
+}
