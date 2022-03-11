@@ -1,5 +1,9 @@
 .App {
     padding: 5px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .header {
@@ -25,4 +29,11 @@
 
 .search-form__button {
 
+}
+.pagination {
+    padding: 10px 0;
+}
+.pagination ul {
+    justify-content: center;
+    padding: 0;
 }

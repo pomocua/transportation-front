@@ -1,7 +1,6 @@
 import React from 'react'
 import {
-  Backdrop, CircularProgress,
-  Paper, styled,
+  Paper,
   Table,
   TableBody,
   TableCell,
@@ -14,10 +13,9 @@ import Row from './Row/Row'
 const CustomPaginationActionTable = ({sortedApplicationList, isLoading}) => {
 
   const columns = [
-    {id: 'name', label: 'Name', maxWidth: 170},
-    {id: 'group', label: 'Group', maxWidth: 170},
-    {id: 'crossedBorder', label: 'Crossed border', maxWidth: 170},
-    {id: 'needs', label: 'Needs', maxWidth: 170}
+    {id: 'from', label: 'Откуда', maxWidth: 170},
+    {id: 'to', label: 'Куда', maxWidth: 170},
+    {id: 'needs', label: 'Количество мест', maxWidth: 170}
     // { id: 'action', label: 'Action', minWidth: 170 }
   ]
 

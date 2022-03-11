@@ -1,143 +1,165 @@
 import './App.css'
 import React from 'react'
 import CustomPaginationActionTable from './components/Table/Table'
-import {useEffect, useState} from 'react'
-import {Backdrop, Button, Checkbox, CircularProgress, FormControlLabel, Grid, TextField} from '@mui/material'
-import SendIcon from '@mui/icons-material/Send'
-import {DatePicker, LoadingButton} from '@mui/lab'
+import {useState} from 'react'
+import {Checkbox, FormControlLabel, Grid, TextField, Pagination} from '@mui/material'
+import {LoadingButton} from '@mui/lab'
+import axios from 'axios'
 
 function App() {
 
   const [isLoading, setIsLoading] = useState(false)
   const [applicationList, setApplicationList] = useState([])
+  const [departureCity, setDepartureCity] = useState('')
+  const [destinationCity, setDestinationCity] = useState('')
+  const [numberOfSeats, setNumberOfSeats] = useState(0)
+  const [isChildSeat, setIsChildSeat] = useState(false)
+  const [activePage, setActivePage] = useState(1)
 
-  const [dateValue, setDateValue] = React.useState(null)
 
-  const fetchApplicationsList = [
+  const transportationOffers = [
     {
-      'id': 'b2cce6e4-413b-406a-901a-5ca9c2ce950b',
-      'fullName': 'Iwan Iwanowich Iwanow',
-      'dateOfBirth': '1980-01-01',
-      'gender': 'men',
-      'languages': [
-        'Украинский',
-        'Английский',
-        'Польский',
-        'Русский'
+      'FirstName': 'Ivan',
+      'LastName': 'Ivanov',
+      'DepartureCity': 'Белосток',
+      'DestinationCity': 'Варшава',
+      'DayOfWeeks': [
+        0
       ],
-      'citizenship': 'Ukraine',
-      'phoneNumber': '+48000000001',
-      'numberOfAdults': 2,
-      'numberOfChildren': 3,
-      'animals': true,
-      'currentLocation': 'Przemysl',
-      'destinationLocation': 'Warsaw',
-      'needs': [
-        'Помощь с транспортом'
-      ],
-      'description': 'lorem ipsum',
-      'createdAt': '2022-02-01T14:00:00Z',
-      'updatedAt': '2022-03-06T10:07:32.168114Z'
+      'ChildSeat': true,
+      'NumberOfSeats': 3,
+      'PhoneNumber': '+48000000001',
+      'RegistrationPlates': 'ERA 75TM',
+      'Description': 'lorem ipsum',
+      'AvailableFrom': 'string',
+      'AvailableTo': 'string',
+      'CreatedAt': '2022-03-11T07:16:38.894Z'
     },
     {
-      'id': 'b2cce6e4-413b-406a-901a-5ca9c2ce950b',
-      'fullName': 'Iwan Iwanowich Iwanow',
-      'dateOfBirth': '1980-01-01',
-      'gender': 'men',
-      'languages': [
-        'Украинский',
-        'Английский',
-        'Польский',
-        'Русский'
+      'FirstName': 'Ivan',
+      'LastName': 'Ivanov',
+      'DepartureCity': 'Белосток',
+      'DestinationCity': 'Варшава',
+      'DayOfWeeks': [
+        0
       ],
-      'citizenship': 'Ukraine',
-      'phoneNumber': '+48000000001',
-      'numberOfAdults': 2,
-      'numberOfChildren': 0,
-      'animals': true,
-      'currentLocation': 'Przemysl',
-      'destinationLocation': 'Warsaw',
-      'needs': [
-        ''
-      ],
-      'description': 'lorem ipsum',
-      'createdAt': '2022-03-06T14:00:00Z',
-      'updatedAt': '2022-03-06T10:07:32.168114Z'
+      'ChildSeat': true,
+      'NumberOfSeats': 3,
+      'PhoneNumber': '+48000000001',
+      'RegistrationPlates': 'ERA 75TM',
+      'Description': 'lorem ipsum',
+      'AvailableFrom': 'string',
+      'AvailableTo': 'string',
+      'CreatedAt': '2022-03-11T07:16:38.894Z'
     },
     {
-      'id': 'b2cce6e4-413b-406a-901a-5ca9c2ce950b',
-      'fullName': 'Petr Petrovich Petrov',
-      'dateOfBirth': '1980-01-01',
-      'gender': 'men',
-      'languages': [
-        'Украинский',
-        'Английский',
-        'Польский',
-        'Русский'
+      'FirstName': 'Ivan',
+      'LastName': 'Ivanov',
+      'DepartureCity': 'Белосток',
+      'DestinationCity': 'Варшава',
+      'DayOfWeeks': [
+        0
       ],
-      'citizenship': 'Ukraine',
-      'phoneNumber': '+48000000001',
-      'numberOfAdults': 2,
-      'numberOfChildren': 1,
-      'animals': true,
-      'currentLocation': 'Przemysl',
-      'destinationLocation': 'Warsaw',
-      'needs': [
-        'Помощь с размещением'
-      ],
-      'description': 'lorem ipsum',
-      'createdAt': '2022-02-01T14:00:00Z',
-      'updatedAt': '2022-03-06T10:07:32.168114Z'
+      'ChildSeat': false,
+      'NumberOfSeats': 3,
+      'PhoneNumber': '+48000000001',
+      'RegistrationPlates': 'ERA 75TM',
+      'Description': 'lorem ipsum',
+      'AvailableFrom': 'string',
+      'AvailableTo': 'string',
+      'CreatedAt': '2022-03-11T07:16:38.894Z'
     },
     {
-      'id': 'b2cce6e4-413b-406a-901a-5ca9c2ce950b',
-      'fullName': 'Sidor Sidorovich Sidorov',
-      'dateOfBirth': '1980-01-01',
-      'gender': 'men',
-      'languages': [
-        'Украинский',
-        'Английский',
-        'Польский',
-        'Русский'
+      'FirstName': 'Ivan',
+      'LastName': 'Ivanov',
+      'DepartureCity': 'Белосток',
+      'DestinationCity': 'Варшава',
+      'DayOfWeeks': [
+        0
       ],
-      'citizenship': 'Ukraine',
-      'phoneNumber': '+48000000001',
-      'numberOfAdults': 1,
-      'numberOfChildren': 1,
-      'animals': true,
-      'currentLocation': 'Przemysl',
-      'destinationLocation': 'Warsaw',
-      'needs': [
-        'Помощь с транспортом', 'Помощь с размещением'
+      'ChildSeat': false,
+      'NumberOfSeats': 3,
+      'PhoneNumber': '+48000000001',
+      'RegistrationPlates': 'ERA 75TM',
+      'Description': 'lorem ipsum',
+      'AvailableFrom': 'string',
+      'AvailableTo': 'string',
+      'CreatedAt': '2022-03-11T07:16:38.894Z'
+    },
+    {
+      'FirstName': 'Ivan',
+      'LastName': 'Ivanov',
+      'DepartureCity': 'Белосток',
+      'DestinationCity': 'Варшава',
+      'DayOfWeeks': [
+        0
       ],
-      'description': 'lorem ipsum',
-      'createdAt': '2022-03-07T12:00:00Z',
-      'updatedAt': '2022-03-06T10:07:32.168114Z'
+      'ChildSeat': true,
+      'NumberOfSeats': 3,
+      'PhoneNumber': '+48000000001',
+      'RegistrationPlates': 'ERA 75TM',
+      'Description': 'lorem ipsum',
+      'AvailableFrom': 'string',
+      'AvailableTo': 'string',
+      'CreatedAt': '2022-03-11T07:16:38.894Z'
     }
   ]
 
-  useEffect(() => {
-    setIsLoading(true)
-    setTimeout(() => {
-      const newApplicationsList = fetchApplicationsList.map(fetchApplication => {
-        return {
-          ...fetchApplication,
-          transport: fetchApplication.needs.includes('Помощь с транспортом'),
-          accomodation: fetchApplication.needs.includes('Помощь с размещением')
-        }
-      })
-      setApplicationList([...newApplicationsList])
-      setIsLoading(false)
-    }, 3000)
-  }, [])
+  function createdParams(DepartureCity, DestinationCity, NumberOfSeats, ChildSeat, Page, PageSize) {
+    return {
+      DepartureCity,
+      DestinationCity,
+      NumberOfSeats,
+      ChildSeat,
+      Page,
+      PageSize
+    }
+  }
+
+  function fetchData(url, params) {
+    if (params.DepartureCity.trim() && params.DestinationCity.trim() && params.NumberOfSeats) {
+      setIsLoading(true)
+      console.log(params)
+      setTimeout(() => {
+        setApplicationList([...transportationOffers])
+        setIsLoading(false)
+      }, 3000)
+
+
+
+    //   axios.get(url, {
+    //     params
+    //   })
+    //     .then(response => setApplicationList([...response.data]))
+    //     .catch(error => console.log(error))
+    //     .finally(() => setIsLoading(false))
+    }
+
+  }
+
+  function submitFormHandler(event) {
+    event.preventDefault()
+    const params = createdParams(departureCity, destinationCity, numberOfSeats, isChildSeat, activePage, 20)
+    const url = ''
+    fetchData(url, params)
+  }
+
+  function changePageHandler(event, value) {
+    setApplicationList([])
+    setActivePage(value)
+    const params = createdParams(departureCity, destinationCity, numberOfSeats, isChildSeat, activePage, 20)
+    const url = ''
+    fetchData(url, params)
+  }
 
   return (
     <div className="App">
+      <div className="app-content">
 
-      <header className="header">
-        <h1>Поиск транспорта в Польше</h1>
-      </header>
-        <form className="search-form">
+        <header className="header">
+          <h1>Поиск транспорта в Польше</h1>
+        </header>
+        <form className="search-form" onSubmit={submitFormHandler}>
           <div className="wrapper">
             <div className="search-form__input__wrapper">
               <TextField
@@ -146,6 +168,8 @@ function App() {
                 label="Откуда"
                 variant="outlined"
                 margin="dense"
+                value={departureCity}
+                onChange={event => setDepartureCity(event.target.value)}
               />
               <TextField
                 className="search-form__input"
@@ -153,6 +177,8 @@ function App() {
                 label="Куда"
                 variant="outlined"
                 margin="dense"
+                value={destinationCity}
+                onChange={event => setDestinationCity(event.target.value)}
               />
             </div>
             <div className="search-form__input__wrapper">
@@ -166,7 +192,6 @@ function App() {
                   shrink: true
                 }}
                 onChange={event => console.log(event.target.value)}
-
                 margin="dense"
               />
               <TextField
@@ -189,10 +214,13 @@ function App() {
                 InputLabelProps={{
                   shrink: true
                 }}
-                defaultValue={2}
                 margin="dense"
+                value={numberOfSeats}
+                onChange={event => setNumberOfSeats(+event.target.value)}
               />
-              <FormControlLabel control={<Checkbox/>} label="Нужно детское кресло"/>
+              <FormControlLabel
+                control={<Checkbox checked={isChildSeat} onChange={() => setIsChildSeat(!isChildSeat)}/>}
+                label="Нужно детское кресло"/>
             </div>
             <Grid container justifyContent="center">
               <LoadingButton
@@ -210,7 +238,17 @@ function App() {
 
         </form>
 
-      <CustomPaginationActionTable sortedApplicationList={applicationList} isLoading={isLoading}/>
+        <CustomPaginationActionTable sortedApplicationList={applicationList} isLoading={isLoading}/>
+      </div>
+      <Pagination className="pagination"
+                  onChange={changePageHandler}
+                  // count={Math.ceil(applicationList.length / 20)}
+                  count={5}
+                  defaultPage={1}
+                  siblingCount={1}
+                  boundaryCount={1}
+                  color="primary"
+      />
     </div>
   )
 }

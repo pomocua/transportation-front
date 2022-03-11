@@ -13,10 +13,6 @@ const Row = ({row, isLoading}) => {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
-  const dateCreated = new Date(row.createdAt)
-  const dateNow = new Date()
-  const dateResult = getNumberOfDays(dateCreated, dateNow)
-
   const StyledModal = styled(ModalUnstyled)`
     position: fixed;
     z-index: 1300;
@@ -48,45 +44,28 @@ const Row = ({row, isLoading}) => {
     pb: 3
   }
 
-  function getNumberOfDays(start, end) {
-    const date1 = new Date(start)
-    const date2 = new Date(end)
-
-    const oneDay = 1000 * 60 * 60 * 24
-    const diffInTime = date2.getTime() - date1.getTime()
-    return Math.round(diffInTime / oneDay)
-  }
-
   return (
     <>
       <TableRow hover role="checkbox" tabIndex={-1} onClick={handleOpen} style={{cursor: 'pointer'}}>
         <TableCell align="left">
-          {row.fullName}
+          {row.DepartureCity}
         </TableCell>
         <TableCell align="left">
-          {`${row.numberOfAdults} ${row.numberOfAdults > 1 ? 'adults' : 'adult'} ${row.numberOfChildren} ${row.numberOfChildren > 1 ? 'kids' : 'kid'}`}
-        </TableCell>
-
-        <TableCell align="left">
-          {new Date(row.createdAt).toLocaleDateString()}
-          &ensp;-&ensp;
-          {dateResult === 0 ? 'today' : `${dateResult} ${dateResult > 1 ? 'days ago' : 'day ago'}`}
+          {row.DestinationCity}
         </TableCell>
         <TableCell align="left">
-          <LocalShippingIcon className={row.transport ? 'table-icon__transport table-icon__transport_show' : 'table-icon__transport'} fontSize="large"/>
-          &ensp;
-          <HouseIcon className={row.accomodation ? 'table-icon__accomodation table-icon__accomodation_show' : 'table-icon__accomodation'} fontSize="large"/>
+          {row.NumberOfSeats}
         </TableCell>
       </TableRow>
-      <StyledModal
-        open={open}
-        onClose={handleClose}
-        BackdropComponent={Backdrop}
-      >
-        <Box sx={style}>
-          <ModalContent data={row} handleClose={handleClose}/>
-        </Box>
-      </StyledModal>
+      {/*<StyledModal*/}
+      {/*  open={open}*/}
+      {/*  onClose={handleClose}*/}
+      {/*  BackdropComponent={Backdrop}*/}
+      {/*>*/}
+      {/*  <Box sx={style}>*/}
+      {/*    <ModalContent data={row} handleClose={handleClose}/>*/}
+      {/*  </Box>*/}
+      {/*</StyledModal>*/}
     </>
   )
 }

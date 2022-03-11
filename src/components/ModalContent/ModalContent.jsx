@@ -11,25 +11,22 @@ const ModalContent = ({data, handleClose}) => {
       </button>
       <div className="modal-content">
         <p className="modal-content__subtitle">Created: {new Date(data.createdAt).toLocaleDateString()}</p>
-        <p className="modal-content__userdata">
-          <span>{data.fullName}, {data.gender === 'men' ? 'M' : 'W'},</span> <span>{data.dateOfBirth}</span>
+        <p className="modal-content__path">
+          {data.DepartureCity} - {data.DestinationCity}
         </p>
         <a className='modal-content__phone' href={'tel:' + data.phoneNumber}>{data.phoneNumber}</a>
         <div className="modal-content__box">
           <div className="modal-content__box-item">
             <p className="modal-content__adults">
-              Adults: {data.numberOfAdults}
+              Количество мест: {data.NumberOfSeats}
             </p>
-            <p className="modal-content__kids">
-              Children: {data.numberOfChildren}
-            </p>
+
             <p className="modal-content__animal">
-              Have animals: {data.animals ? 'yes' : 'no'}
+              Детское кресло: {data.ChildSeat ? 'есть' : 'нету'}
             </p>
           </div>
           <div className="modal-content__box-item">
             <p className="modal-content__citizenship">
-              Citizenship: {data.citizenship}
             </p>
             <p className="modal-content__languages">
               Languages: {data.languages.map((language, index) => (
