@@ -1,185 +1,186 @@
-import './App.css'
-import React from 'react'
-import CustomPaginationActionTable from './components/Table/Table'
+import React, {useEffect, useLayoutEffect} from 'react'
 import {useState} from 'react'
-import {Checkbox, FormControlLabel, Grid, TextField, Pagination} from '@mui/material'
-import {LoadingButton} from '@mui/lab'
 import axios from 'axios'
 
-function App() {
+import CustomPaginationActionTable from './components/Table/Table'
+import {
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  TextField,
+  Pagination,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl
+} from '@mui/material'
+import {LoadingButton} from '@mui/lab'
 
-  const [isLoading, setIsLoading] = useState(false)
+import './App.css'
+
+function App() {
+  const faikData = [
+    {
+      'FirstName': 'Ivan',
+      'LastName': 'Ivanov',
+      'CarModel': 'Ford Transit',
+      'ChildSeat': true,
+      'DepartureCity': 'Warsawa',
+      'DestinationCity': 'Krakow',
+      'DayOfWeeks': [
+        0
+      ],
+      'NumberOfSeats': 2,
+      'PhoneNumber': '+77777777777',
+      'RegistrationPlates': 'AB 856',
+      'Description': 'lorem',
+      'AvailableFrom': 'Warsawa',
+      'AvailableTo': 'Krakow',
+      'CreatedAt': '2022-03-25T08:32:26.600Z'
+    },
+    {
+      'FirstName': 'Ivan',
+      'LastName': 'Ivanov',
+      'CarModel': 'Ford Transit',
+      'ChildSeat': true,
+      'DepartureCity': 'Warsawa',
+      'DestinationCity': 'Krakow',
+      'DayOfWeeks': [
+        0
+      ],
+      'NumberOfSeats': 2,
+      'PhoneNumber': '+77777777777',
+      'RegistrationPlates': 'AB 856',
+      'Description': 'lorem',
+      'AvailableFrom': 'Warsawa',
+      'AvailableTo': 'Krakow',
+      'CreatedAt': '2022-03-25T08:32:26.600Z'
+    },
+    {
+      'FirstName': 'Ivan',
+      'LastName': 'Ivanov',
+      'CarModel': 'Ford Transit',
+      'ChildSeat': true,
+      'DepartureCity': 'Warsawa',
+      'DestinationCity': 'Krakow',
+      'DayOfWeeks': [
+        0
+      ],
+      'NumberOfSeats': 2,
+      'PhoneNumber': '+77777777777',
+      'RegistrationPlates': 'AB 856',
+      'Description': 'lorem',
+      'AvailableFrom': 'Warsawa',
+      'AvailableTo': 'Krakow',
+      'CreatedAt': '2022-03-25T08:32:26.600Z'
+    }
+  ]
+
+  const [isLoadingData, setIsLoadingData] = useState(false)
+  const [citesList, setCitesList] = useState([])
   const [applicationList, setApplicationList] = useState([])
   const [departureCity, setDepartureCity] = useState('')
   const [destinationCity, setDestinationCity] = useState('')
   const [numberOfSeats, setNumberOfSeats] = useState(0)
   const [isChildSeat, setIsChildSeat] = useState(false)
-  const [activePage, setActivePage] = useState(1)
+  const [totalPages, setTotalPages] = useState(0)
 
+  const url = ''
 
-  const transportationOffers = [
-    {
-      'FirstName': 'Ivan',
-      'LastName': 'Ivanov',
-      'DepartureCity': 'Белосток',
-      'DestinationCity': 'Варшава',
-      'DayOfWeeks': [
-        0
-      ],
-      'ChildSeat': true,
-      'NumberOfSeats': 3,
-      'PhoneNumber': '+48000000001',
-      'RegistrationPlates': 'ERA 75TM',
-      'Description': 'lorem ipsum',
-      'AvailableFrom': 'string',
-      'AvailableTo': 'string',
-      'CreatedAt': '2022-03-11T07:16:38.894Z'
-    },
-    {
-      'FirstName': 'Ivan',
-      'LastName': 'Ivanov',
-      'DepartureCity': 'Белосток',
-      'DestinationCity': 'Варшава',
-      'DayOfWeeks': [
-        0
-      ],
-      'ChildSeat': true,
-      'NumberOfSeats': 3,
-      'PhoneNumber': '+48000000001',
-      'RegistrationPlates': 'ERA 75TM',
-      'Description': 'lorem ipsum',
-      'AvailableFrom': 'string',
-      'AvailableTo': 'string',
-      'CreatedAt': '2022-03-11T07:16:38.894Z'
-    },
-    {
-      'FirstName': 'Ivan',
-      'LastName': 'Ivanov',
-      'DepartureCity': 'Белосток',
-      'DestinationCity': 'Варшава',
-      'DayOfWeeks': [
-        0
-      ],
-      'ChildSeat': false,
-      'NumberOfSeats': 3,
-      'PhoneNumber': '+48000000001',
-      'RegistrationPlates': 'ERA 75TM',
-      'Description': 'lorem ipsum',
-      'AvailableFrom': 'string',
-      'AvailableTo': 'string',
-      'CreatedAt': '2022-03-11T07:16:38.894Z'
-    },
-    {
-      'FirstName': 'Ivan',
-      'LastName': 'Ivanov',
-      'DepartureCity': 'Белосток',
-      'DestinationCity': 'Варшава',
-      'DayOfWeeks': [
-        0
-      ],
-      'ChildSeat': false,
-      'NumberOfSeats': 3,
-      'PhoneNumber': '+48000000001',
-      'RegistrationPlates': 'ERA 75TM',
-      'Description': 'lorem ipsum',
-      'AvailableFrom': 'string',
-      'AvailableTo': 'string',
-      'CreatedAt': '2022-03-11T07:16:38.894Z'
-    },
-    {
-      'FirstName': 'Ivan',
-      'LastName': 'Ivanov',
-      'DepartureCity': 'Белосток',
-      'DestinationCity': 'Варшава',
-      'DayOfWeeks': [
-        0
-      ],
-      'ChildSeat': true,
-      'NumberOfSeats': 3,
-      'PhoneNumber': '+48000000001',
-      'RegistrationPlates': 'ERA 75TM',
-      'Description': 'lorem ipsum',
-      'AvailableFrom': 'string',
-      'AvailableTo': 'string',
-      'CreatedAt': '2022-03-11T07:16:38.894Z'
-    }
-  ]
+  useEffect(() => {
+    fetchCites(url)
+  }, [])
 
-  function createdParams(DepartureCity, DestinationCity, NumberOfSeats, ChildSeat, Page, PageSize) {
+  function createParams(page = 1) {
     return {
-      DepartureCity,
-      DestinationCity,
-      NumberOfSeats,
-      ChildSeat,
-      Page,
-      PageSize
+      DepartureCity: departureCity,
+      DestinationCity: destinationCity,
+      NumberOfSeats: numberOfSeats,
+      ChildSeat: isChildSeat,
+      PageNumber: page,
+      PageSize: 20
     }
   }
 
-  function fetchData(url, params) {
-    if (params.DepartureCity.trim() && params.DestinationCity.trim() && params.NumberOfSeats) {
-      setIsLoading(true)
-      console.log(params)
-      setTimeout(() => {
-        setApplicationList([...transportationOffers])
-        setIsLoading(false)
-      }, 3000)
-
-
-
-    //   axios.get(url, {
-    //     params
-    //   })
-    //     .then(response => setApplicationList([...response.data]))
-    //     .catch(error => console.log(error))
-    //     .finally(() => setIsLoading(false))
-    }
-
+  function fetchCites(url) {
+    axios.get(url, {
+      method: 'GET'
+    }).then(response => {
+      try {
+        setCitesList(response.data)
+      } catch (error) {
+        console.log(error)
+      }
+    })
   }
 
-  function submitFormHandler(event) {
+  function fetchApplicationList(url, page = 1) {
+    setIsLoadingData(true)
+    axios.get(url, {
+      method: 'GET',
+      params: createParams(page)
+    }).then(response => {
+      try {
+        setApplicationList(response.data.Data)
+        setTotalPages(response.data.TotalPages)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setIsLoadingData(false)
+      }
+    })
+  }
+
+  function changePage(_, page) {
+    fetchApplicationList(url, page)
+  }
+
+  function onSubmitForm(event) {
     event.preventDefault()
-    const params = createdParams(departureCity, destinationCity, numberOfSeats, isChildSeat, activePage, 20)
-    const url = ''
-    fetchData(url, params)
-  }
-
-  function changePageHandler(event, value) {
-    setApplicationList([])
-    setActivePage(value)
-    const params = createdParams(departureCity, destinationCity, numberOfSeats, isChildSeat, activePage, 20)
-    const url = ''
-    fetchData(url, params)
+    fetchApplicationList(url)
   }
 
   return (
     <div className="App">
       <div className="app-content">
-
         <header className="header">
           <h1>Поиск транспорта в Польше</h1>
         </header>
-        <form className="search-form" onSubmit={submitFormHandler}>
+        <form className="search-form" onSubmit={onSubmitForm}>
           <div className="wrapper">
             <div className="search-form__input__wrapper">
-              <TextField
-                className="search-form__input"
-                id="outlined-required"
-                label="Откуда"
-                variant="outlined"
-                margin="dense"
-                value={departureCity}
-                onChange={event => setDepartureCity(event.target.value)}
-              />
-              <TextField
-                className="search-form__input"
-                id="outlined-required"
-                label="Куда"
-                variant="outlined"
-                margin="dense"
-                value={destinationCity}
-                onChange={event => setDestinationCity(event.target.value)}
-              />
+              <FormControl required sx={{mt: 2, width: 420}}>
+                <InputLabel id="demo-simple-select-required-label">Откуда</InputLabel>
+                <Select
+                  labelId="demo-simple-select-required-label"
+                  id="demo-simple-select-required"
+                  label="Откуда *"
+                  onChange={(event) => setDepartureCity(event.target.value)}
+                  value={departureCity}
+                >
+                  {citesList.map(city => {
+                    return (
+                      <MenuItem value={city.name} key={city.id}>{city.name}</MenuItem>
+                    )
+                  })}
+                </Select>
+              </FormControl>
+              <FormControl required sx={{mt: 2, width: 420}}>
+                <InputLabel id="demo-simple-select-required-label">Куда</InputLabel>
+                <Select
+                  labelId="demo-simple-select-required-label"
+                  id="demo-simple-select-required"
+                  label="Куда *"
+                  onChange={(event) => setDestinationCity(event.target.value)}
+                  value={destinationCity}
+                >
+                  {citesList.map(city => {
+                    return (
+                      <MenuItem value={city.name} key={city.id}>{city.name}</MenuItem>
+                    )
+                  })}
+                </Select>
+              </FormControl>
             </div>
             <div className="search-form__input__wrapper">
               <TextField
@@ -191,7 +192,6 @@ function App() {
                 InputLabelProps={{
                   shrink: true
                 }}
-                onChange={event => console.log(event.target.value)}
                 margin="dense"
               />
               <TextField
@@ -202,7 +202,7 @@ function App() {
                   shrink: true
                 }}
                 inputProps={{
-                  step: 300 // 5 min
+                  step: 300
                 }}
                 sx={{width: 150}}
                 margin="dense"
@@ -216,7 +216,7 @@ function App() {
                 }}
                 margin="dense"
                 value={numberOfSeats}
-                onChange={event => setNumberOfSeats(+event.target.value)}
+                onChange={(event) => setNumberOfSeats(+event.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox checked={isChildSeat} onChange={() => setIsChildSeat(!isChildSeat)}/>}
@@ -226,28 +226,24 @@ function App() {
               <LoadingButton
                 type="submit"
                 size="large"
-                loading={isLoading}
+                loading={isLoadingData}
                 variant="outlined"
               >
                 Показать варианты
               </LoadingButton>
             </Grid>
-
           </div>
-
-
         </form>
 
-        <CustomPaginationActionTable sortedApplicationList={applicationList} isLoading={isLoading}/>
+        <CustomPaginationActionTable sortedApplicationList={applicationList}/>
       </div>
       <Pagination className="pagination"
-                  onChange={changePageHandler}
-                  // count={Math.ceil(applicationList.length / 20)}
-                  count={5}
+                  count={totalPages}
                   defaultPage={1}
                   siblingCount={1}
                   boundaryCount={1}
                   color="primary"
+                  onChange={(event, page) => changePage(event, page)}
       />
     </div>
   )

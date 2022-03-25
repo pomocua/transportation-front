@@ -1,6 +1,7 @@
 {
   "name": "transportation-front",
   "version": "0.1.0",
+  "homepage": "https://pomocua.github.io/transportation-front/",
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "^2.13.1",
@@ -13,6 +14,7 @@
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.1",
+    "gh-pages": "^3.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
@@ -22,7 +24,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

@@ -7,7 +7,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping'
 // import './Row.scss'
 
 
-const Row = ({row, isLoading}) => {
+const Row = ({row}) => {
 
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => setOpen(true)
@@ -55,6 +55,9 @@ const Row = ({row, isLoading}) => {
         </TableCell>
         <TableCell align="left">
           {row.NumberOfSeats}
+        </TableCell>
+        <TableCell align="left">
+          {row.ChildSeat ? 'Да' : 'Нет'}
         </TableCell>
       </TableRow>
       {/*<StyledModal*/}
