@@ -26,10 +26,6 @@ function App() {
     isChildSeat: false
   })
 
-  const dateNow = new Date()
-  const date = `${dateNow.getFullYear()}-${dateNow.getMonth() > 10 ? dateNow.getMonth() + 1 : '0' + (dateNow.getMonth() + 1)}-${dateNow.getDate()}`
-  const time = `${dateNow.getHours()}:${dateNow.getMinutes()}`
-
   useEffect(() => {
     fetchCites(URL)
   }, [])
@@ -47,7 +43,7 @@ function App() {
 
   function fetchCites(url) {
     setIsLoadingCities(true)
-    axios.get(url, {
+    axios.get(url + '/api/cities', {
       method: 'GET'
     }).then(response => {
       try {
@@ -153,7 +149,6 @@ function App() {
                 id="date"
                 label="Когда"
                 type="date"
-                defaultValue={date}
                 sx={{width: 220}}
                 InputLabelProps={{
                   shrink: true
@@ -163,7 +158,6 @@ function App() {
               <TextField
                 id="time"
                 type="time"
-                defaultValue={time}
                 InputLabelProps={{
                   shrink: true
                 }}
