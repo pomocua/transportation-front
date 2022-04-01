@@ -90,7 +90,7 @@ function App() {
     const name = event.target.name
     const value = event.target.value
     if (event.target.name === 'isChildSeat') {
-      setOptions(prevState => ({...prevState, [name]: !options.name}))
+      setOptions(prevState => ({...prevState, [name]: !options[name]}))
     } else {
       setOptions(prevState => ({...prevState, [name]: value}))
     }
