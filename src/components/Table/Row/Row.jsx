@@ -1,17 +1,20 @@
 import React from 'react'
-import {Box, CircularProgress, styled, TableCell, TableRow} from '@mui/material'
+import {Box, styled, TableCell, TableRow} from '@mui/material'
 import ModalUnstyled from '@mui/base/ModalUnstyled'
 import ModalContent from '../../ModalContent/ModalContent'
-import HouseIcon from '@mui/icons-material/House'
-import LocalShippingIcon from '@mui/icons-material/LocalShipping'
-// import './Row.scss'
 
 
 const Row = ({row}) => {
 
   const [open, setOpen] = React.useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
+
+  function handleOpen() {
+    setOpen(true)
+  }
+
+  function handleClose() {
+    setOpen(false)
+  }
 
   const StyledModal = styled(ModalUnstyled)`
     position: fixed;
@@ -48,27 +51,27 @@ const Row = ({row}) => {
     <>
       <TableRow hover role="checkbox" tabIndex={-1} onClick={handleOpen} style={{cursor: 'pointer'}}>
         <TableCell align="left">
-          {row.DepartureCity}
+          {row.departureCity.name}
         </TableCell>
         <TableCell align="left">
-          {row.DestinationCity}
+          {row.destinationCity.name}
         </TableCell>
         <TableCell align="left">
-          {row.NumberOfSeats}
+          {row.numberOfSeats}
         </TableCell>
         <TableCell align="left">
-          {row.ChildSeat ? 'Да' : 'Нет'}
+          {row.childSeat ? 'Да' : 'Нет'}
         </TableCell>
       </TableRow>
-      {/*<StyledModal*/}
-      {/*  open={open}*/}
-      {/*  onClose={handleClose}*/}
-      {/*  BackdropComponent={Backdrop}*/}
-      {/*>*/}
-      {/*  <Box sx={style}>*/}
-      {/*    <ModalContent data={row} handleClose={handleClose}/>*/}
-      {/*  </Box>*/}
-      {/*</StyledModal>*/}
+      <StyledModal
+        open={open}
+        onClose={handleClose}
+        BackdropComponent={Backdrop}
+      >
+        <Box sx={style}>
+          <ModalContent data={row} handleClose={handleClose}/>
+        </Box>
+      </StyledModal>
     </>
   )
 }

@@ -10,13 +10,13 @@ import {
 } from '@mui/material'
 import Row from './Row/Row'
 
-const CustomPaginationActionTable = ({sortedApplicationList}) => {
+const CustomPaginationActionTable = ({applicationList}) => {
 
   const columns = [
-    {id: 'from', label: 'Откуда', maxWidth: 170},
-    {id: 'to', label: 'Куда', maxWidth: 170},
-    {id: 'needs', label: 'Количество мест', maxWidth: 170},
-    { id: 'action', label: 'Наличие детского кресла', minWidth: 170 }
+    {id: 'from', label: 'Откуда',minWidth: 200},
+    {id: 'to', label: 'Куда',minWidth: 200},
+    {id: 'needs', label: 'Количество мест',width: 170},
+    { id: 'action', label: 'Наличие детского кресла',width: 170 }
   ]
 
   return (
@@ -40,7 +40,7 @@ const CustomPaginationActionTable = ({sortedApplicationList}) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {sortedApplicationList
+              {applicationList
                 .map((row, index) => {
                   return (
                     <Row key={index} row={row}/>

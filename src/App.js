@@ -1,108 +1,52 @@
-import React, {useEffect, useLayoutEffect} from 'react'
+import React, {useEffect} from 'react'
 import {useState} from 'react'
 import axios from 'axios'
 
 import CustomPaginationActionTable from './components/Table/Table'
-import {
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  TextField,
-  Pagination,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl
-} from '@mui/material'
+import {Checkbox, FormControlLabel, Grid, TextField, Pagination, MenuItem, Select, InputLabel, FormControl, Backdrop, CircularProgress} from '@mui/material'
 import {LoadingButton} from '@mui/lab'
 
 import './App.css'
 
 function App() {
-  const faikData = [
-    {
-      'FirstName': 'Ivan',
-      'LastName': 'Ivanov',
-      'CarModel': 'Ford Transit',
-      'ChildSeat': true,
-      'DepartureCity': 'Warsawa',
-      'DestinationCity': 'Krakow',
-      'DayOfWeeks': [
-        0
-      ],
-      'NumberOfSeats': 2,
-      'PhoneNumber': '+77777777777',
-      'RegistrationPlates': 'AB 856',
-      'Description': 'lorem',
-      'AvailableFrom': 'Warsawa',
-      'AvailableTo': 'Krakow',
-      'CreatedAt': '2022-03-25T08:32:26.600Z'
-    },
-    {
-      'FirstName': 'Ivan',
-      'LastName': 'Ivanov',
-      'CarModel': 'Ford Transit',
-      'ChildSeat': true,
-      'DepartureCity': 'Warsawa',
-      'DestinationCity': 'Krakow',
-      'DayOfWeeks': [
-        0
-      ],
-      'NumberOfSeats': 2,
-      'PhoneNumber': '+77777777777',
-      'RegistrationPlates': 'AB 856',
-      'Description': 'lorem',
-      'AvailableFrom': 'Warsawa',
-      'AvailableTo': 'Krakow',
-      'CreatedAt': '2022-03-25T08:32:26.600Z'
-    },
-    {
-      'FirstName': 'Ivan',
-      'LastName': 'Ivanov',
-      'CarModel': 'Ford Transit',
-      'ChildSeat': true,
-      'DepartureCity': 'Warsawa',
-      'DestinationCity': 'Krakow',
-      'DayOfWeeks': [
-        0
-      ],
-      'NumberOfSeats': 2,
-      'PhoneNumber': '+77777777777',
-      'RegistrationPlates': 'AB 856',
-      'Description': 'lorem',
-      'AvailableFrom': 'Warsawa',
-      'AvailableTo': 'Krakow',
-      'CreatedAt': '2022-03-25T08:32:26.600Z'
-    }
-  ]
 
+  const URL = ''
+
+  const [isLoadingCities, setIsLoadingCities] = useState(false)
   const [isLoadingData, setIsLoadingData] = useState(false)
+
   const [citesList, setCitesList] = useState([])
   const [applicationList, setApplicationList] = useState([])
-  const [departureCity, setDepartureCity] = useState('')
-  const [destinationCity, setDestinationCity] = useState('')
-  const [numberOfSeats, setNumberOfSeats] = useState(0)
-  const [isChildSeat, setIsChildSeat] = useState(false)
-  const [totalPages, setTotalPages] = useState(0)
 
-  const url = ''
+  const [totalPages, setTotalPages] = useState(0)
+  const [options, setOptions] = useState({
+    departureCity: '',
+    destinationCity: '',
+    numberOfSeats: 0,
+    isChildSeat: false
+  })
+
+  const dateNow = new Date()
+  const date = `${dateNow.getFullYear()}-${dateNow.getMonth() > 10 ? dateNow.getMonth() + 1 : '0' + (dateNow.getMonth() + 1)}-${dateNow.getDate()}`
+  const time = `${dateNow.getHours()}:${dateNow.getMinutes()}`
 
   useEffect(() => {
-    fetchCites(url)
+    fetchCites(URL)
   }, [])
 
   function createParams(page = 1) {
     return {
-      DepartureCity: departureCity,
-      DestinationCity: destinationCity,
-      NumberOfSeats: numberOfSeats,
-      ChildSeat: isChildSeat,
+      DepartureCity: options.departureCity,
+      DestinationCity: options.destinationCity,
+      NumberOfSeats: +options.numberOfSeats,
+      ChildSeat: options.isChildSeat,
       PageNumber: page,
       PageSize: 20
     }
   }
 
   function fetchCites(url) {
+    setIsLoadingCities(true)
     axios.get(url, {
       method: 'GET'
     }).then(response => {
@@ -110,6 +54,8 @@ function App() {
         setCitesList(response.data)
       } catch (error) {
         console.log(error)
+      } finally {
+        setIsLoadingCities(false)
       }
     })
   }
@@ -121,8 +67,8 @@ function App() {
       params: createParams(page)
     }).then(response => {
       try {
-        setApplicationList(response.data.Data)
-        setTotalPages(response.data.TotalPages)
+        setApplicationList(response.data.data)
+        setTotalPages(response.data.totalPages)
       } catch (error) {
         console.log(error)
       } finally {
@@ -132,16 +78,34 @@ function App() {
   }
 
   function changePage(_, page) {
-    fetchApplicationList(url, page)
+    fetchApplicationList(URL, page)
   }
 
   function onSubmitForm(event) {
     event.preventDefault()
-    fetchApplicationList(url)
+    fetchApplicationList(URL)
+  }
+
+  function changeOptions(event) {
+    const name = event.target.name
+    const value = event.target.value
+    if (event.target.name === 'isChildSeat') {
+      setOptions(prevState => ({...prevState, [name]: !options.name}))
+    } else {
+      setOptions(prevState => ({...prevState, [name]: value}))
+    }
   }
 
   return (
     <div className="App">
+
+      <Backdrop
+        sx={{color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1}}
+        open={isLoadingCities}
+      >
+        <CircularProgress color="inherit"/>
+      </Backdrop>
+
       <div className="app-content">
         <header className="header">
           <h1>Поиск транспорта в Польше</h1>
@@ -155,8 +119,9 @@ function App() {
                   labelId="demo-simple-select-required-label"
                   id="demo-simple-select-required"
                   label="Откуда *"
-                  onChange={(event) => setDepartureCity(event.target.value)}
-                  value={departureCity}
+                  name="departureCity"
+                  onChange={changeOptions}
+                  value={options.departureCity}
                 >
                   {citesList.map(city => {
                     return (
@@ -171,8 +136,9 @@ function App() {
                   labelId="demo-simple-select-required-label"
                   id="demo-simple-select-required"
                   label="Куда *"
-                  onChange={(event) => setDestinationCity(event.target.value)}
-                  value={destinationCity}
+                  name="destinationCity"
+                  onChange={changeOptions}
+                  value={options.destinationCity}
                 >
                   {citesList.map(city => {
                     return (
@@ -187,7 +153,7 @@ function App() {
                 id="date"
                 label="Когда"
                 type="date"
-                defaultValue="2017-05-24"
+                defaultValue={date}
                 sx={{width: 220}}
                 InputLabelProps={{
                   shrink: true
@@ -197,7 +163,7 @@ function App() {
               <TextField
                 id="time"
                 type="time"
-                defaultValue="07:30"
+                defaultValue={time}
                 InputLabelProps={{
                   shrink: true
                 }}
@@ -215,12 +181,18 @@ function App() {
                   shrink: true
                 }}
                 margin="dense"
-                value={numberOfSeats}
-                onChange={(event) => setNumberOfSeats(+event.target.value)}
+                value={options.numberOfSeats}
+                name="numberOfSeats"
+                onChange={changeOptions}
               />
               <FormControlLabel
-                control={<Checkbox checked={isChildSeat} onChange={() => setIsChildSeat(!isChildSeat)}/>}
-                label="Нужно детское кресло"/>
+                control={<Checkbox
+                  checked={options.isChildSeat}
+                  name="isChildSeat"
+                  onChange={changeOptions}
+                />}
+                label="Нужно детское кресло"
+              />
             </div>
             <Grid container justifyContent="center">
               <LoadingButton
@@ -235,7 +207,7 @@ function App() {
           </div>
         </form>
 
-        <CustomPaginationActionTable sortedApplicationList={applicationList}/>
+        <CustomPaginationActionTable applicationList={applicationList}/>
       </div>
       <Pagination className="pagination"
                   count={totalPages}

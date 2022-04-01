@@ -1,0 +1,99 @@
+
+.modal {
+    min-height: 60vh;
+    position: relative;
+}
+
+.modal__button-close {
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    top: -3%;
+    right: -3%;
+    font-weight: 700;
+    z-index: 10;
+    background: transparent;
+    border: none;
+}
+
+.modal-content {
+    padding: 10px;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.modal-content__main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 25px;
+    margin-bottom: 40px;
+}
+.modal-content__main div {
+    margin: 0 10px;
+}
+.modal-content__path {
+    display: flex;
+    align-items: center;
+    font-style: italic;
+}
+
+.modal-content__seats {
+    display: flex;
+    align-items: center;
+    color: dodgerblue;
+}
+
+.modal-content__block {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+.modal-content__block-left {
+    display: flex;
+    align-items: center;
+    flex: 0 0 40%;
+    margin-right: 10px;
+}
+
+.modal-content__block-right {
+    display: flex;
+    align-items: center;
+    flex: 0 0 40%;
+    margin-left: 10px;
+}
+
+.modal-content__list {
+    list-style: none;
+    display: flex;
+}
+
+.modal-content__phone {
+    color: inherit;
+    text-decoration: none;
+}
+
+.modal-content__registration {
+    padding: 5px 10px;
+    border: 1px solid #000;
+}
+
+.modal-content__description {
+    max-height: 100px;
+    overflow-y: scroll;
+}
+
+.icon {
+    max-height: 35px;
+    width: auto;
+    margin-right: 5px;
+}
+@media (max-width: 576px) {
+    .modal-content__block {
+        font-size: 15px;
+        white-space: nowrap;
+    }
+}
